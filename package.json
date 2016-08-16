@@ -4,7 +4,10 @@
   "description": "A JavaScript edition of Ambient 1: Music for Airports 2/1 by Brian Eno",
   "main": "musicforairports.js",
   "scripts": {
-    "start": "lite-server"
+    "build": "babel src -d dist",
+    "build:watch": "babel src -d dist -w",
+    "server": "lite-server",
+    "start": "concurrently 'npm run build:watch' 'npm run server'"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,9 @@
   },
   "homepage": "http://teropa.info/blog/2016/07/28/javascript-systems-music.html",
   "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2",
+    "concurrently": "^2.2.0",
     "lite-server": "^2.2.2"
   }
 }
