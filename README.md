@@ -3,13 +3,17 @@
 A JavaScript edition of [Ambient 1: Music for Airports 2/1](https://en.wikipedia.org/wiki/Ambient_1:_Music_for_Airports)
 by Brian Eno.
 
-Uses instrument samples from the [Sonatina Symphonic Orchestra](http://sso.mattiaswestlund.net/download.html). You can get more of them by downloading the ZIP from their site. also uses an impulse response sample
-from [AirWindows](http://www.airwindows.com/airwindows-impulses/).
+![Screenshot](/dist/screenshot.png?raw=true)
+
+Uses instrument samples from the [Sonatina Symphonic Orchestra](http://sso.mattiaswestlund.net/download.html). You can get more of them by downloading the ZIP from their site.
+
+Also uses an impulse response sample from [AirWindows](http://www.airwindows.com/airwindows-impulses/).
 
 This project setup differs from the one in the article in the following:
 
-1. Sample buffer are cached in memory instead of fetching them anew each time.
-2. Babel is used for ES2015 to ES5 compilation instead of running ES2015 natively in the browser.
+1. The canvas visualization is included as well, not just the music.
+2. Sample buffers are cached in memory instead of fetching them anew each time.
+3. Babel is used for ES2015 to ES5 compilation instead of running ES2015 natively in the browser.
 
 ## Development
 
@@ -17,6 +21,23 @@ This project setup differs from the one in the article in the following:
 2. `npm run start`
 
 This installs a live local server as well as a Babel compiler watcher. Changes in `src` are picked up automatically.
+
+## Build and Deployment
+
+To build the project, just invoke `npm run build`. Everything you need will be in the `dist` folder:
+
+* `index.html` to host the application
+* `musicforairport.js`, the compiled source code of the app.
+* `musicforairports.min.js`, a minified version of the source code.
+* `Samples` samples used to play the music and to generate the convolution reverb.
+
+### Embedding
+
+If you want to embed the player on an existing website, take a look at `index.html`. There are three key parts you need to take from there and add to your page:
+
+* A `<canvas>` element with id `music-for-airports`.
+* The whatwg-fetch polyfill and the Web Audio API shim libraries for cross-browser compatibility.
+* The `musicforairports.js` or `musicforairports.min.js` script tag.
 
 ## License
 

@@ -4,7 +4,9 @@
   "description": "A JavaScript edition of Ambient 1: Music for Airports 2/1 by Brian Eno",
   "main": "musicforairports.js",
   "scripts": {
-    "build": "babel src -d dist",
+    "compile": "babel src -d dist",
+    "minify": "uglifyjs -o dist/musicforairports.min.js dist/musicforairports.js",
+    "build": "npm run compile && npm run minify",
     "build:watch": "babel src -d dist -w",
     "server": "lite-server",
     "start": "concurrently 'npm run build:watch' 'npm run server'"
@@ -27,6 +29,7 @@
     "babel-cli": "^6.11.4",
     "babel-preset-es2015": "^6.13.2",
     "concurrently": "^2.2.0",
-    "lite-server": "^2.2.2"
+    "lite-server": "^2.2.2",
+    "uglify-js": "^2.7.1"
   }
 }

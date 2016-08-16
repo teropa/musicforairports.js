@@ -14,10 +14,30 @@ const SAMPLE_LIBRARY = {
     { note: 'F#',  octave: 6, file: 'Samples/Grand Piano/piano-f-f#6.wav' }
   ]
 };
+
 const OCTAVE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const LOOPS = [
+  {instrument: 'Grand Piano', note: 'F4',  duration: 19.7, delay: 4},
+  {instrument: 'Grand Piano', note: 'Ab4', duration: 17.8, delay: 8.1},
+  {instrument: 'Grand Piano', note: 'C5',  duration: 21.3, delay: 5.6},
+  {instrument: 'Grand Piano', note: 'Db5', duration: 18.5, delay: 12.6},
+  {instrument: 'Grand Piano', note: 'Eb5', duration: 20.0, delay: 9.2},
+  {instrument: 'Grand Piano', note: 'F5',  duration: 20.0, delay: 14.1},
+  {instrument: 'Grand Piano', note: 'Ab5', duration: 17.7, delay: 3.1}
+];
+
+const LANE_COLOR = 'rgba(220, 220, 220, 0.3)';
+const SOUND_COLOR = '#ED146F';
 
 let audioContext = new AudioContext();
 let sampleCache = {};
+
+let canvas = document.getElementById('music-for-airports');
+let context = canvas.getContext('2d');
+
+// Control variable, set to start time when playing begins
+let playingSince = null;
 
 function fetchSample(path) {
   sampleCache[path] = sampleCache[path] || fetch(encodeURIComponent(path))
@@ -66,8 +86,6 @@ function getSample(instrument, noteAndOctave) {
   }));
 }
 
-
-
 function playSample(instrument, note, destination, delaySeconds = 0) {
   getSample(instrument, note).then(({audioBuffer, distance}) => {
     let playbackRate = Math.pow(2, distance / 12);
@@ -81,25 +99,76 @@ function playSample(instrument, note, destination, delaySeconds = 0) {
   });
 }
 
-function startLoop(instrument, note, destination, loopLengthSeconds, delaySeconds) {
-  playSample(instrument, note, destination, delaySeconds);
-  setInterval(
-    () => playSample(instrument, note, destination, delaySeconds),
-    loopLengthSeconds * 1000
+function render() {
+  context.clearRect(0, 0, 1000, 1000);
+
+  context.strokeStyle = '#888';
+  context.lineWidth = 1;
+  context.moveTo(325, 325);
+  context.lineTo(650, 325);
+  context.stroke();
+
+  context.lineWidth = 30;
+  context.lineCap = 'round';
+  let radius = 280;
+  for (const {duration, delay} of LOOPS) {
+    const size = Math.PI * 2 / duration;
+    const offset = playingSince ? audioContext.currentTime - playingSince : 0;
+    const startAt = (delay - offset) * size;
+    const endAt = (delay + 0.01 - offset) * size;
+
+    context.strokeStyle = LANE_COLOR;
+    context.beginPath();
+    context.arc(325, 325, radius, 0, 2 * Math.PI);
+    context.stroke();
+
+    context.strokeStyle = SOUND_COLOR;
+    context.beginPath();
+    context.arc(325, 325, radius, startAt, endAt);
+    context.stroke();
+
+    radius -= 35;
+  }
+  if (playingSince) {
+    requestAnimationFrame(render);
+  } else {
+    context.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    context.strokeStyle = 'rgba(0, 0, 0, 0)';
+    context.beginPath();
+    context.moveTo(235, 170);
+    context.lineTo(485, 325);
+    context.lineTo(235, 455);
+    context.lineTo(235, 170);
+    context.fill();
+  }
+}
+
+function startLoop({instrument, note, duration, delay}, nextNode) {
+  playSample(instrument, note, nextNode, delay);
+  return setInterval(
+    () => playSample(instrument, note, nextNode, delay),
+    duration * 1000
   );
 }
 
-fetchSample('AirportTerminal.wav').then(convolverBuffer => {
+fetchSample('Samples/AirportTerminal.wav').then(convolverBuffer => {
 
-  let convolver = audioContext.createConvolver();
-  convolver.buffer = convolverBuffer;
-  convolver.connect(audioContext.destination);
+  let convolver, runningLoops;
 
-  startLoop('Grand Piano', 'F4',  convolver, 19.7, 4);
-  startLoop('Grand Piano', 'Ab4', convolver, 17.8, 8.1);
-  startLoop('Grand Piano', 'C5',  convolver, 21.3, 5.6);
-  startLoop('Grand Piano', 'Db5', convolver, 18.5, 12.6);
-  startLoop('Grand Piano', 'Eb5', convolver, 20.0, 9.2);
-  startLoop('Grand Piano', 'F5',  convolver, 20.0, 14.1);
-  startLoop('Grand Piano', 'Ab5', convolver, 17.7, 3.1);
+  canvas.addEventListener('click', () => {
+    if (playingSince) {
+      convolver.disconnect();
+      runningLoops.forEach(l => clearInterval(l));
+      playingSince = null;
+    } else {
+      convolver = audioContext.createConvolver();
+      convolver.buffer = convolverBuffer;
+      convolver.connect(audioContext.destination);
+      playingSince = audioContext.currentTime;
+      runningLoops = LOOPS.map(loop => startLoop(loop, convolver));
+    }
+    render();
+  });
+
+  render();
 });
