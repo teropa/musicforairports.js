@@ -6,9 +6,10 @@ by Brian Eno.
 Uses instrument samples from the [Sonatina Symphonic Orchestra](http://sso.mattiaswestlund.net/download.html). You can get more of them by downloading the ZIP from their site. also uses an impulse response sample
 from [AirWindows](http://www.airwindows.com/airwindows-impulses/).
 
-This project setup differs from the article in the following:
+This project setup differs from the one in the article in the following:
 
-1. Babel is used for ES2015 to ES5 compilation instead of running ES2015 natively in the browser.
+1. Sample buffer are cached in memory instead of fetching them anew each time.
+2. Babel is used for ES2015 to ES5 compilation instead of running ES2015 natively in the browser.
 
 ## Development
 

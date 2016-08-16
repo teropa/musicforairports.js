@@ -17,11 +17,13 @@ const SAMPLE_LIBRARY = {
 const OCTAVE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 let audioContext = new AudioContext();
+let sampleCache = {};
 
 function fetchSample(path) {
-  return fetch(encodeURIComponent(path))
+  sampleCache[path] = sampleCache[path] || fetch(encodeURIComponent(path))
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer));
+  return sampleCache[path];
 }
 
 function noteValue(note, octave) {
