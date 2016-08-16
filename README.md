@@ -1,7 +1,7 @@
 # Music for Airports
 
 A JavaScript edition of [Ambient 1: Music for Airports 2/1](https://en.wikipedia.org/wiki/Ambient_1:_Music_for_Airports)
-by Brian Eno.
+by Brian Eno, as built in the [JavaScript Systems Music](http://teropa.info/blog/2016/07/28/javascript-systems-music.html) guide.
 
 ![Screenshot](/dist/screenshot.png?raw=true)
 
