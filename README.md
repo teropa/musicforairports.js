@@ -3,6 +3,8 @@
 A JavaScript edition of [Ambient 1: Music for Airports 2/1](https://en.wikipedia.org/wiki/Ambient_1:_Music_for_Airports)
 by Brian Eno, as built in the [JavaScript Systems Music](http://teropa.info/blog/2016/07/28/javascript-systems-music.html) guide.
 
+See live demos [here](http://teropa.info/blog/2016/07/28/javascript-systems-music.html#putting-it-together-launching-the-loops) and [here](http://teropa.info/blog/2016/07/28/javascript-systems-music.html#exploring-variations-on-music-for-airports).
+
 ![Screenshot](/dist/screenshot.png?raw=true)
 
 Uses instrument samples from the [Sonatina Symphonic Orchestra](http://sso.mattiaswestlund.net/download.html). You can get more of them by downloading the ZIP from their site.
