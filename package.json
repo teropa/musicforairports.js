@@ -1,0 +1,26 @@
+{
+  "name": "musicforairports.js",
+  "version": "1.0.0",
+  "description": "A JavaScript edition of Ambient 1: Music for Airports 2/1 by Brian Eno",
+  "main": "musicforairports.js",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teropa/musicforairports.js.git"
+  },
+  "keywords": [
+    "webaudio",
+    "music"
+  ],
+  "author": "Tero Parviainen <tero@teropa.info>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teropa/musicforairports.js/issues"
+  },
+  "homepage": "http://teropa.info/blog/2016/07/28/javascript-systems-music.html",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}

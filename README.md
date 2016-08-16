@@ -8,8 +8,8 @@ from [AirWindows](http://www.airwindows.com/airwindows-impulses/).
 
 ## Usage
 
-1. `npm install -g lite-server`
-2. `lite-server`
+1. `npm install`
+2. `npm run start`
 
 ## License
 
